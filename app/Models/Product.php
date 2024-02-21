@@ -62,7 +62,6 @@ class Product extends Model
             $this->save();
 }
 
-
     public function show($id) {
             $companies = DB::table('companies')->create();
             return view('products.create', ['companies' => $companies]);
@@ -71,11 +70,12 @@ class Product extends Model
 
     public function update($product, $data, $image_path, $request) {
 
-        $product->product_name = $request->product_name;
-        $product->price = $request->price;
-        $product->price = $request->comment;
-        $product->stock = $request->stock;
-        $product->stock = $request->company_id;
+        DB::table('products')->insert([
+        $product->product_name = $request->product_name,
+        $product->price = $request->price,
+        $product->price = $request->comment,
+        $product->stock = $request->stock,
+        $product->stock = $request->company_id,
 
         if($product->hasFile('img_path')){
         $filename = $product->img_path->getClientOriginalName();
@@ -87,8 +87,9 @@ class Product extends Model
         return redirect()->route('products.index')
         ->with('success', 'Product updated successfully');
 }
+])
 
-public function search($products ,$companies) {
+public function search($product, $company, $request) {
     $products = DB::table('products')
     ->join('companies','products.company_id','=','companies.id')
     ->select ('products.*','companies. company_name');

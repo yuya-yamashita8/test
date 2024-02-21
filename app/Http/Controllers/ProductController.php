@@ -12,8 +12,8 @@ class ProductController extends Controller
 {
     public function index()
     {
-            $products = new Product ();
-            $companies = new Company ();
+            $products = new Product();
+            $companies = new Company();
             $products = $products->index();
             $companies = $companies->index();
             return view('products.index',['products' => $products, 'companies' => $companies]);
@@ -60,9 +60,9 @@ class ProductController extends Controller
     {
         $product_model = new Product();
         $company_model = new Company();
-        $product = $product_model->detail ($id);
+        $product = $product_model->detail($id);
         $companies = $company_model->index();
-
+        //商品編集画面を表示する。その際、商品の情報と会社の情報を画面に渡す。
         return view('products.edit', ['product' => $product, 'companies' => $companies]);
     }
 
@@ -96,21 +96,21 @@ class ProductController extends Controller
         try {
             // 登録処理呼び出し
             $product_model = new Product();
-            $product = $product_model->detail($id);
+            $product_model->detail($id);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
             return back();
         }
         // 処理が完了したらproductsにリダイレクト
-        return redirect('products');
+        return redirect('products.index');
     }
 
 
     public function search(ProductsRequest $request)
     {
-        $product = $request-input ('search');
-        $company = $request-»input ('company_name');
+        $product = $request->input ('search');
+        $company = $request->input ('company_name');
 
         // トランザクション開始
         DB::beginTransaction();
@@ -119,7 +119,7 @@ class ProductController extends Controller
             // 登録処理呼び出し
             $product_model = new Product();
             $company_model = new Company();
-            $product = $product_model->search($product, $company, $request,);
+            $product = $product_model->search($product, $company, $request);
             $companies = $company_model->index();
             DB::commit();
         } catch (\Exception $e) {

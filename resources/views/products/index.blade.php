@@ -11,12 +11,10 @@
     <input type="text" name="search" class="form-control" placeholder="検索キーワード" value="{{ request('search') }}">
 
 @csrf
-    <input type="text" name="company_name" list="example" placeholder="メーカー名">
-        <datalist id="example">
-            <option value="山下商事"></option>
-            <option value="山下ジャパン"></option>
-            <option value="山下クリニック"></option>
-        </datalist>
+<form method="POST" action="{{ route('products.destroy', $product) }}" class="d-inline">
+    @method('DELETE')
+    button type="submit" class="btn btn-danger btn-sm mx-1">削除</button>
+</form>
 
     <input type="submit" value="検索">
 </form>
@@ -46,8 +44,7 @@
             <td>{{ $product->stock }}</td>
             <td>{{ $product->company->company_name }}</td>
 <td>
-                        <a href="{{ route('products.show', $product) }}" class="btn btn-info btn-sm mx-1">詳細表示</a>
-                        <a href="{{ route('products.edit', $product) }}" class="btn btn-primary btn-sm mx-1">編集</a>
+                        <a href="{{ route('products.show', $product) }}" class="btn btn-info btn-sm mx-1">詳細</a>
                         <form method="POST" action="{{ route('products.destroy', $product) }}" class="d-inline">
                             @csrf
                             @method('DELETE')
